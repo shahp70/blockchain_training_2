@@ -47,7 +47,7 @@ class BlockChain {
         if (newChain) {
 
             if (newChain.chain.length <= this.chain.length) {
-                console.log('New chain is not longer than existing chain, hence the chain will not be replaced');
+                console.log('New chain is not longer than existing chain, hence the chain will not be replaced.');
                 return;
             } else if (!newChain.isValidChain()) {
                 console.log('New chain is invalid, hence existing chain will not be replaced.');
