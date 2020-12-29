@@ -7,6 +7,8 @@ class BlockChain {
         this.chain = [Block.genesis()];
     }
 
+    
+
     addBlock(data) {
         this.chain.push(Block.mineBlock(
             this.chain[this.chain.length - 1], data
@@ -15,24 +17,23 @@ class BlockChain {
         return this.chain[this.chain.length - 1];
     }
 
-    isValidChain(chainToBeInspected) {
+    isValidChain() {
 
         let result = false;
 
-        if (chainToBeInspected
-            && chainToBeInspected.chain.length > 0
-            && this.chainToBeInspected.chain[0].isGenesis()) {
+        if (this.chain.length > 0) {
 
             result = true;
 
-            for (let index = 1;index < chainToBeInspected.chain.length;index++) {
+            for (let index = 1;index < this.chain.length;index++) {
 
-                const previousBlock = chainToBeInspected.chain[index - 1];
+                const previousBlock = this.chain[index - 1];
 
-                if (previousBlock.hash == chainToBeInspected[index].hash
-                    && chainToBeInspected[index].isHashValid()) {
+                if (previousBlock.hash == this.chain[index].lastHash
+                    && Block.constructFromGenericObject(this.chain[index]).isHashValid()) {
                     result = true;
                 } else {
+                    
                     result = false;
                     break;
                 }
@@ -46,15 +47,18 @@ class BlockChain {
 
         if (newChain) {
 
-            if (newChain.chain.length <= this.chain.length) {
+            const newBlockchain = new BlockChain();
+            newBlockchain.chain = newChain;
+
+            if (newChain.length <= this.chain.length) {
                 console.log('New chain is not longer than existing chain, hence the chain will not be replaced.');
                 return;
-            } else if (!newChain.isValidChain()) {
+            } else if (!newBlockchain.isValidChain()) {
                 console.log('New chain is invalid, hence existing chain will not be replaced.');
                 return;
             }
 
-            this.chain = newChain.chain;
+            this.chain = newChain;
 
         }
     }

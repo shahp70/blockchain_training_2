@@ -2,6 +2,7 @@
 const BlockChain = require('.');
 const Block = require('./block');
 const { expect } = require('@jest/globals');
+const { DIFFICULTY } = require('../config');
 
 describe('Blockchain', () => {
 

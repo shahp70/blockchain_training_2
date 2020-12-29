@@ -1,5 +1,6 @@
 const { it, expect } = require('@jest/globals');
 const Block = require('./block');
+const { DIFFICULTY } = require('../config');
 
 describe('Block', () => {
 
@@ -30,9 +31,17 @@ describe('Block', () => {
 
     it('Test isHashValid function', () => {
 
-        const block = new Block("adada", "asdad2dasda", null, "adaddaa3dasda");
-        block.hash = Block.hash(block.timeStamp, block.lastHash, block.data);
+        const block = new Block("adada", "asdad2dasda", null, "adaddaa3dasda", 56789658);
+
+        block.hash = Block.hash(block.timeStamp, block.lastHash, block.data, block.nonce);
 
         expect(block.isHashValid()).toEqual(true);
     });
+
+    it('Ensure that it calculates a nonce that generates a hash satisfying difficuly level', () => {
+        const minedBlock = Block.mineBlock(Block.genesis(), 'Please generate correct nonce');
+
+        expect(minedBlock.hash.substring(0, DIFFICULTY)).toEqual('0'.repeat(DIFFICULTY));
+
+    })
 });
